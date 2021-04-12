@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SortController!{% endblock %}
+
+{% block body %}
+<div>
+    <form method="post" action="{{ url('sort_submit') }}" enctype="multipart/form-data">
+        <input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+               name="input_csv">
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}
