@@ -48,17 +48,26 @@ class CsvCategoriesWriterService
 
         fputcsv($fp, CsvConst::HEADERS, CsvConst::DELIMITER);
         foreach ($categoryGoods->getGoods() as $good) {
-            fputcsv(
-                $fp,
-                [
-                    CsvConst::MARKETPLACE => $good->getMarketplace(),
-                    CsvConst::SELLER_SKU => $good->getSku(),
-                    CsvConst::ITEM_DESCRIPTION => $good->getDescription(),
-                    CsvConst::QTY => $good->getAmount(),
-                    CsvConst::TOTAL => $good->getTotal() ?: self::DEFAULT_TOTAL,
-                ],
-                CsvConst::DELIMITER
-            );
+            $this->writeCsvLine($fp, $good->getMarketplace(), $good->getSku(), $good->getDescription(), $good->getAmount(), $good->getTotal());
         }
+
+        $this->writeCsvLine($fp, null, null, null, null, $categoryGoods->getTotalAmount());
+
+        fclose($fp);
+    }
+
+    private function writeCsvLine($fp, ?string $marketplace, ?string $sellerSku, ?string $itemDescription, ?string $qty, ?string $total): void
+    {
+        fputcsv(
+            $fp,
+            [
+                CsvConst::MARKETPLACE => $marketplace,
+                CsvConst::SELLER_SKU => $sellerSku,
+                CsvConst::ITEM_DESCRIPTION => $itemDescription,
+                CsvConst::QTY => $qty,
+                CsvConst::TOTAL => $total,
+            ],
+            CsvConst::DELIMITER
+        );
     }
 }

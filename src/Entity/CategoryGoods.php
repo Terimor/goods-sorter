@@ -31,4 +31,15 @@ class CategoryGoods
     {
         $this->goods[] = $good;
     }
+
+    public function getTotalAmount(): int
+    {
+        $total = 0;
+
+        foreach ($this->goods as $good) {
+            $total += $good->getTotal();
+        }
+
+        return $total;
+    }
 }

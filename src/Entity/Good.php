@@ -4,7 +4,7 @@ namespace App\Entity;
 
 class Good
 {
-    private const DESCRIPTION_VOLUME_REGEX = '#(\d+(?:[\.,]{0,1})\d*)(?:Kg|kg|L)#';
+    private const DESCRIPTION_VOLUME_REGEX = '#(\d+(?:[\.,]{0,1})\d*)(?:Kg|kg|L|KG)#';
 
     /** @var string $marketplace */
     private $marketplace;
