@@ -2,6 +2,7 @@
 
 namespace App\Facade;
 
+use App\Service\CsvCategoriesReportWriterService;
 use App\Service\CsvCategoriesWriterService;
 use App\Service\CsvGoodsReaderService;
 use App\Service\CsvRulesReaderService;
@@ -28,18 +29,23 @@ class SortFacade
     /** @var CsvCategoriesWriterService $csvCategoriesWriterService */
     private $csvCategoriesWriterService;
 
+    /** @var CsvCategoriesReportWriterService $csvCategoriesReportWriterService */
+    private $csvCategoriesReportWriterService;
+
     public function __construct(
         KernelInterface $kernelInterface,
         CsvGoodsReaderService $csvGoodsReaderService,
         CsvRulesReaderService $csvRulesReaderService,
         SorterService $sorterService,
-        CsvCategoriesWriterService $csvCategoriesWriterService
+        CsvCategoriesWriterService $csvCategoriesWriterService,
+        CsvCategoriesReportWriterService $csvCategoriesReportWriterService
     ) {
         $this->kernelInterface = $kernelInterface;
         $this->csvGoodsReaderService = $csvGoodsReaderService;
         $this->csvRulesReaderService = $csvRulesReaderService;
         $this->sorterService = $sorterService;
         $this->csvCategoriesWriterService = $csvCategoriesWriterService;
+        $this->csvCategoriesReportWriterService = $csvCategoriesReportWriterService;
     }
 
     public function proceedFile(UploadedFile $goodsCsv): void
@@ -50,6 +56,7 @@ class SortFacade
         $categories = $this->sorterService->sort($goods, $rules);
 
         $this->csvCategoriesWriterService->write($categories);
+        $this->csvCategoriesReportWriterService->write($categories);
     }
 
     private function getRulesFilePath(): string

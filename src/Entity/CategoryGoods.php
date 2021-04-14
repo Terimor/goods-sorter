@@ -42,4 +42,17 @@ class CategoryGoods
 
         return $total;
     }
+
+    public function getAmountWithoutVolume(): int
+    {
+        $total = 0;
+
+        foreach ($this->goods as $good) {
+            if (is_null($good->getTotal())) {
+                $total++;
+            }
+        }
+
+        return $total;
+    }
 }

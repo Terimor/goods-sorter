@@ -220,6 +220,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\var\categories\total.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\var\categories\﻿Tungöl.csv">
           <value>
             <Attribute>
