@@ -51,7 +51,7 @@ class Good
         $volume = $this->getVolume();
 
         if ($volume) {
-            return $volume->getAmount();
+            return $volume->getAmount() * $this->amount;
         }
 
         return null;
