@@ -25,12 +25,16 @@ class CsvCategoriesReportWriterService
         /** @var CategoryGoods $categoryGood */
         foreach ($categoriesGoods as $categoryGood) {
             $this->writeCsvLine($fp, $categoryGood->getCategoryName(), $categoryGood->getTotalAmount(), $categoryGood->getAmountWithoutVolume());
+
+            foreach ($categoryGood->getContainersAmount() as $container => $amount) {
+                $this->writeCsvLine($fp, $container, $amount, (int) filter_var($container, FILTER_SANITIZE_NUMBER_INT) * $amount);
+            }
         }
 
         fclose($fp);
     }
 
-    private function writeCsvLine($fp, string $categoryName, float $totalAmount, int $goodsAmountWithoutVolume): void
+    private function writeCsvLine($fp, ?string $categoryName, ?float $totalAmount, ?int $goodsAmountWithoutVolume): void
     {
         fputcsv(
             $fp,

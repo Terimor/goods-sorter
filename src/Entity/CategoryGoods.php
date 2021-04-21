@@ -55,4 +55,23 @@ class CategoryGoods
 
         return $total;
     }
+
+    public function getContainersAmount(): array
+    {
+        $result = [];
+
+        foreach ($this->goods as $good) {
+            $volume = $good->getVolume();
+
+            if ($volume && $volume->isLiters()) {
+                if (!isset($result[$volume->getAmountWithUnits()])) {
+                    $result[$volume->getAmountWithUnits()] = 0;
+                }
+
+                $result[$volume->getAmountWithUnits()] += $good->getAmount();
+            }
+        }
+
+        return $result;
+    }
 }

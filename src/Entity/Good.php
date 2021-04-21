@@ -4,7 +4,7 @@ namespace App\Entity;
 
 class Good
 {
-    private const DESCRIPTION_VOLUME_REGEX = '#(\d+(?:[\.,]{0,1})\d*)(?:Kg|kg|L|KG)#';
+    private const DESCRIPTION_VOLUME_REGEX = '#(\d+(?:[\.,]{0,1})\d*)(Kg|kg|L|KG)#';
 
     /** @var string $marketplace */
     private $marketplace;
@@ -48,10 +48,24 @@ class Good
 
     public function getTotal(): ?float
     {
+        $volume = $this->getVolume();
+
+        if ($volume) {
+            return $volume->getAmount();
+        }
+
+        return null;
+    }
+
+    public function getVolume(): ?Volume
+    {
         preg_match(self::DESCRIPTION_VOLUME_REGEX, $this->getDescription(), $matches);
 
-        if (isset($matches[1])) {
-            return (float)str_replace(',', '.', $matches[1]) * $this->getAmount();
+        if (isset($matches[1]) && isset($matches[2])) {
+            $amount = (float)str_replace(',', '.', $matches[1]);
+            $units = $matches[2];
+
+            return new Volume($amount, $units);
         } else {
             return null;
         }
