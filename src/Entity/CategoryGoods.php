@@ -63,7 +63,7 @@ class CategoryGoods
         foreach ($this->goods as $good) {
             $volume = $good->getVolume();
 
-            if ($volume && $volume->isLiters()) {
+            if ($volume) {
                 if (!isset($result[$volume->getAmountWithUnits()])) {
                     $result[$volume->getAmountWithUnits()] = 0;
                 }
