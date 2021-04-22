@@ -27,7 +27,7 @@ class CsvCategoriesReportWriterService
             $this->writeCsvLine($fp, $categoryGood->getCategoryName(), $categoryGood->getTotalAmount(), $categoryGood->getAmountWithoutVolume());
 
             foreach ($categoryGood->getContainersAmount() as $container => $amount) {
-                $this->writeCsvLine($fp, $container, $amount, (int) filter_var($container, FILTER_SANITIZE_NUMBER_INT) * $amount);
+                $this->writeCsvLine($fp, $container, $amount, floatval($container) * $amount);
             }
         }
 
