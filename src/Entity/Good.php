@@ -4,7 +4,9 @@ namespace App\Entity;
 
 class Good
 {
-    private const DESCRIPTION_VOLUME_REGEX = '#(\d+(?:[\.,]{0,1})\d*)(Kg|kg|L|KG)#';
+    private const DESCRIPTION_VOLUME_REGEX = '#(\d+(?:[\.,]{0,1})\d*)(Kg|kg|L|KG|l)#';
+
+    private const HIGH_TRUTHFUL_VOLUME_LIMIT = 25;
 
     /** @var string $marketplace */
     private $marketplace;
@@ -61,7 +63,7 @@ class Good
     {
         preg_match(self::DESCRIPTION_VOLUME_REGEX, $this->getDescription(), $matches);
 
-        if (isset($matches[1]) && isset($matches[2])) {
+        if (isset($matches[1]) && isset($matches[2]) && (float)$matches[2] <= self::HIGH_TRUTHFUL_VOLUME_LIMIT) {
             $amount = (float)str_replace(',', '.', $matches[1]);
             $units = $matches[2];
 
