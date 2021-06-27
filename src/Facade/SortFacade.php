@@ -13,7 +13,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class SortFacade
 {
-    private const RULES_FILE_PATH_PATTERN = '%s/var/rules/rules.csv';
+    private const RULES_FILE_PATH_PATTERN = '%s/var/rules/category-rules.csv';
+    private const REPLACEMENT_RULES_FILE_PATH_PATTERN = '%s/var/rules/replacement-rules.csv';
 
     /** @var KernelInterface $kernelInterface */
     private $kernelInterface;
@@ -56,7 +57,7 @@ class SortFacade
 
     public function proceedFile(UploadedFile $goodsCsv): void
     {
-        $goods = $this->csvGoodsReaderService->read($goodsCsv->getPathname());
+        $goods = $this->csvGoodsReaderService->read($goodsCsv->getPathname(), $this->getReplacementRulesFilePath());
         $rules = $this->csvRulesReaderService->read($this->getRulesFilePath());
 
         $categories = $this->sorterService->sort($goods, $rules);
@@ -69,5 +70,10 @@ class SortFacade
     private function getRulesFilePath(): string
     {
         return sprintf(self::RULES_FILE_PATH_PATTERN, $this->kernelInterface->getProjectDir());
+    }
+
+    private function getReplacementRulesFilePath(): string
+    {
+        return sprintf(self::REPLACEMENT_RULES_FILE_PATH_PATTERN, $this->kernelInterface->getProjectDir());
     }
 }

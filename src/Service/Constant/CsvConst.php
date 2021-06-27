@@ -22,6 +22,9 @@ class CsvConst
     public const TOTAL_AMOUNT = 1;
     public const GOODS_AMOUNT_WITHOUT_VOLUME = 2;
 
+    public const REPLACEMENT_FROM = 0;
+    public const REPLACEMENT_TO = 1;
+
     public const DELIMITER = ';';
     public const CATEGORY_PATH_PATTERN = '%s/var/categories/%s.csv';
 }
