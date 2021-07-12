@@ -5,6 +5,7 @@ namespace App\Entity;
 class Good
 {
     private const DESCRIPTION_VOLUME_REGEX = '#(\d+(?:[\.,]{0,1})\d*)(Kg|kg|L|KG|l)#';
+    private const DESCRIPTION_VOLUME_RANGE_REGEX = '#(\d+(?:[\.,]{0,1})\d*)(Kg|kg|L|KG|l)\s*-\s*(\d+(?:[\.,]{0,1})\d*)(Kg|kg|L|KG|l)#';
 
     private const HIGH_TRUTHFUL_VOLUME_LIMIT = 25;
 
@@ -61,16 +62,18 @@ class Good
 
     public function getVolume(): ?Volume
     {
-        preg_match(self::DESCRIPTION_VOLUME_REGEX, $this->getDescription(), $matches);
+        $descriptionWithoutRanges = preg_replace(self::DESCRIPTION_VOLUME_RANGE_REGEX, '', $this->getDescription());
+
+        preg_match(self::DESCRIPTION_VOLUME_REGEX, $descriptionWithoutRanges, $matches);
 
         if (isset($matches[1]) && isset($matches[2]) && (float)$matches[2] <= self::HIGH_TRUTHFUL_VOLUME_LIMIT) {
             $amount = (float)str_replace(',', '.', $matches[1]);
             $units = $matches[2];
 
             return new Volume($amount, $units);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function isRuleCorrespond(Rule $rule): bool
